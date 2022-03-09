@@ -1,0 +1,231 @@
+/*STYLING THE DASHBOARD PAGE*/
+#dashboardDiv{    
+    height: 100%;
+    display: grid;
+    grid-template-columns: 70% 1fr;
+    column-gap:1px;
+}
+#memberSide{
+background-color: rgb(222, 236, 227);
+width:1fr;
+height:100% ;
+border: 1px;
+border-style: solid;
+border-radius: 2%;
+}
+
+.sectionHead{
+    background-color: rg(166, 197, 178);
+    text-align: center;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    font-size:27px;
+    font-weight: bold;
+    border-radius: 8px;
+    height: 2em;
+}
+.figures{
+    height: 300px;
+    background-color: rgb(222, 236, 227);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+}
+.records{
+    background-color:rgb(166, 197, 178);
+    height:98%;
+    margin: 3px;
+    font-size: 40px;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    border-radius: 10px;
+       
+
+}
+.records p{
+    font-size: 30px;
+}
+#groupSide{
+    background-color: rgb(222, 236, 227);
+    height:100%;   
+    border: 1px;
+    border-style: solid;
+    border-radius: 2%;
+    text-align: center;
+}
+
+#groupSide .figures{
+    background-color: rgb(166, 197, 178);
+    height:30em;
+    border-radius: 13px;
+    margin-top:3px;
+    margin-left: 7px;
+    text-align:center;
+    grid-template-columns: 1fr;
+    justify-content: center;
+
+}
+
+#alerts{
+    background-color: rgb(166, 197, 178);
+    height: 170px;
+    margin: 3px;
+    border-bottom-left-radius:25px;
+    border-bottom-right-radius:25px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+#summariesTable{
+    width:90%;
+    margin-top:2em;
+    height: 80%;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 1px;
+    border-bottom: 1px;
+    border-style: solid;
+    margin:auto;
+    font-size: 1.3em;
+}
+#summariesTable tr,#summariesTable td,#summariesTable th{
+    border-top: 1px;
+    border-left: 1px;
+    border-right: 0px;
+    border-bottom: 0px;
+    border-style: solid;
+    margin-right:  5px;
+    height: 3.6em;
+}
+#groupSide .figures div{
+    height: 100%;
+    margin-top: 5px;
+    text-align: center;
+    
+}
+
+
+
+/*STYLING THE ALERTS PAGE*/
+#mainAlertsPage{
+    display: grid;
+    text-align: center;
+    grid-template-columns: 70% 1fr;
+    grid-template-areas: 'form' 'list';
+    column-gap:5px;
+}
+
+#dataCapture{
+    margin:auto;
+    border:1px;
+    border-style: solid;  
+    border-color:cadetblue;  
+    border-radius: 2%;
+    width:100%;
+    height:600px;
+    padding-bottom: 10px;
+    grid-area: form;
+}
+
+#alertPane{
+    background-color: cadetblue;
+    height: 3em;
+    margin: 30px auto;
+    margin-top: 23px;
+    width: 50em;
+    border-radius:25px;
+    padding-top: 0.2em;
+    position: absolute;
+    margin-left:3em;
+    font-weight: 600;
+}
+
+#alertPane p{
+    margin-left:0em;
+    
+}
+
+#alertPane button,.button{
+    float: right;
+    margin-right: 10px;
+    border-radius: 20px ;
+}
+.loansAppliedTable,#committeeDiv{
+    margin-top: 1em;
+    margin-left: 1em;
+    width: 55em;
+    display: none;
+    background-color: cadetblue;
+    height: auto;
+    border-top-right-radius:10px;
+    border-top-left-radius:10px ;
+    padding-top: 0.1em;
+}
+.loansAppliedTable th,#committeeDiv th,#finalLoan th{
+    width: 9em;
+    border: 1px;
+    border-style: solid;
+}
+
+#approvalProgress{
+    display: inline;
+    width:98%;
+    background-color: cadetblue;
+    border-radius: 10px;
+    align-items: center;
+    margin-top: 1.1em;
+    height: 550px;
+}
+.existingApprovals{
+margin:auto;
+border-left:1px;
+border-top:1px;
+border-right:0px;
+border-bottom:0px;
+border-style: solid;
+ width: 95%;
+}
+
+.existingApprovals th,.existingApprovals td{
+height: 30px;
+border-bottom: 1px;
+border-right: 1px;
+border-left:0px;
+border-top: 0px;
+border-style: solid;
+}
+
+.button{
+    margin-top: 10px;
+    display: none;
+    background-color: cadetblue;
+}
+
+#committeeDiv{
+    display: none;
+    margin-top: 2.3em;
+    padding-top:0.5em;
+    padding-bottom: 20px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius:10px;
+}
+
+.committeeTable{
+    width: 100%;
+}
+
+#finalLoan{
+margin-top: 1em;
+background-color: rgb(166, 197, 178);
+height: 380px;
+border: 1px;
+border-style: solid;
+border-radius: 10px;
+display: none;
+grid-area: form;
+}

@@ -1,0 +1,180 @@
+#innerList{
+    background-color:rgb(222, 236, 227);
+}
+
+/* STYLES FOR THE REPORTS PAGE*/
+#reportheaders{
+    height:3em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 0px;  
+}
+    
+
+.reportheaders{
+    font-size: 1.4em;
+    background-color: cadetblue;
+    width: 650px;
+    text-align: center;
+    padding-top: 9px;   
+    font-weight: 600;   
+}
+
+#reportContents{
+    background-color: mediuseagreen;
+    height: 33em;
+    margin-top:1px;
+    display: grid;
+    grid-template-columns: 1fr  1fr;
+    grid-template-areas: 'loanReports' 'contributionReports';
+
+}
+.reportLists{
+    border: 1px;
+    border-style: solid;
+    border-color: cadetblue;
+    border-radius: 10px;
+    margin-right: 1px;
+    column-gap: 4px;
+    height:auto;
+}
+.categories{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 3px;
+    border-top: 0px;
+    border-right: 0px;
+    border-left: 0px;
+    border-style: solid;
+    height: 23px;
+    font-size: 18px;
+}
+.alternate{
+    background-color: rgb(172, 170, 170);
+    
+}
+.loans{
+    background-color: rgb(116, 167, 104);
+    margin-top: 20px;
+}
+
+#declinedLoansDiv{
+    display: none;
+}
+#loansInProgressDiv{
+    display: none;
+}
+
+.onclick{
+    background-color: cadetblue;
+    font-weight: bold;
+    color: maroon;
+}
+.PdfGenerators{
+    display:none;
+}
+
+.visiblePdfGenerators{
+    display: inline;
+    background-color: blue;
+}
+
+/*MEMBERS PAGE*/
+#allMembers,#creationAndEditingDiv{
+    display: grid;
+    justify-content: center; 
+    text-align: center;   
+    border-radius: 10px;
+    width:52em;
+    margin-left: 2.3em;
+    margin-bottom: 1.5em;
+    background-color:rgb(166, 197, 178);
+}
+#allMembers table th,#allMembers table td{
+    font-size: 15px;
+    width: 7em;
+    height: 1.7em;    
+}
+
+#creationAndEditingDiv{
+    text-align: right;
+    padding-bottom: 10px;
+    padding-top: 20px;
+}
+#creationAndEditingDiv form{
+margin-top: 10px;
+border: 1px;
+border-radius: 10px;
+border-style: solid;
+padding: 20px;
+
+}
+#creationAndEditingDiv form button{
+margin-top: 15px;
+}
+.creationFormLabels{
+    width: 45px;
+    margin-right:2em;
+    font-size: 20px;
+    
+    
+}
+.creationFormInputs{
+    width: 19em;
+    font-size: 17px;
+    margin-top: 1em;
+    height:1.5em;
+    border-radius: 5px;
+    background-color: rgb(247, 241, 241);
+}
+
+
+/* STYLING THE ERRORPAGE */
+#errorDiv{
+     height:20em;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    text-align: center;
+    color: maroon;
+    
+}
+
+/* CONTRIBUTIONS PAGE */
+#contributionsForm{
+    background-color:rgb(166, 197, 178);
+    width: 720px;
+    margin-left:35px ;
+    text-align: right;
+    padding: 10px;
+    padding-right: 100px;
+    border-radius: 10px;
+    height: 350px;
+}
+.contributionInputs{
+    width:23em;
+    height: 1.8em;
+    margin-top: 17px;
+    font-size:16px ;
+}
+
+.contributionInputLabels{
+   font-size: 23px;
+   margin-right: 10px;
+   margin-top: 17px;
+}
+
+#contributionsForm button{
+    width: 8em;
+    margin-top: 15px;
+}
+
+#loanPresenceIndicator{
+    color: green;
+    font-size: 21px;
+    text-align: center;
+    margin-right:140px;
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./loginAndOutStyles/loginOutFiles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Document</title>
+</head>
+<body>
+    <div id="main">
+    <div id="loginPane">
+        <div id="title">
+        <img id="groupLogo" src="./images/JoyMakersLogo.jpg" alt=""><h2>Joy Makers Sign Up</h2>
+        </div>
+        <form action="/request" method="post">
+        <div id="inputs">
+        <p>Please Provide your details.</p>
+        <input type="text" name="firstName" placeholder="first Name" required><br>
+        <input type="text" name="lastName" placeholder="last Name" required><br>
+        <input type="tel" pattern="[07]{2}[0-9]{2}[0-9]{3}[0-9]{3}" name="phone" placeholder="phone number" required')"><br>
+        <%-message%>
+        <input type="text" name="residence" placeholder="Living Location" required><br> 
+        <input type="text" name="business" placeholder="Business" required><br> 
+        <input type="text" name="businessLocation" placeholder="Business Location" required>
+        <div>     
+        <button type="submit">Request</button><br>
+        <%-confirmation%>
+       </form>
+        </div>  
+        </div>
+</div>
+    
+</body>
+</html>

@@ -1,0 +1,142 @@
+/*STYLING THE MAIN CONTAINER GRID */
+.mainBody{
+    display: grid;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    grid-template-columns:295px 1fr 1fr;
+    grid-template-rows: 100px 1fr 50px;
+    column-gap:5px;
+    row-gap:4px;
+    grid-template-areas: "header header header"
+    "navigation content content"
+    "footer footer footer";
+}
+/*STYLING THE NAVIGATIONBAR AND CONTENTS*/
+#navigationbar{
+    display:inline-flex;   
+    padding-bottom: 5px;
+    grid-area: header;    
+    border-bottom:0.5px;
+    border-bottom-style: solid;
+    border-color: rgb(1, 39, 1);
+}
+#groupLogo{
+    width:130px;
+    border-radius:20%;    
+    height: 95px;
+    margin-right:5px;
+}
+#logoDiv{
+    text-align: center;
+}
+#loggedInInfor{
+margin-top: 10px;
+margin-left:auto;
+margin-right: 30px;
+display: flex;
+flex-direction:column;
+align-items: center;
+}
+
+#loggedInInfor #member{
+    border-radius: 29%;
+    border: 1px;
+    border-style: solid;
+    border-color:rgb(5, 119, 14);
+    background-color:transparent;
+    color:rgb(3, 61, 63);
+    font-size: 22px;
+    font-weight: 700;
+}
+#groupLogoInfor{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 300px;
+}
+
+/*STYLING THE SIDENAVBAR AND CONTENTS*/
+
+#sideNavBar{
+    grid-area: navigation;
+    padding: 0px;
+    /*background-color:rgb(238, 238, 238);*/
+    background-color:rgb(222, 236, 227);
+    
+}
+#menuBar{
+    height: auto;    
+    position: absolute;
+    padding-top: 0px;
+    margin: 5px;
+    margin-top:3px;
+    border-radius: 2%;
+    width: 280px;
+    overflow:auto;
+    
+}
+#menuList{
+    font-size: 1.6em;
+    line-height: 1.8em;
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: rgb(15, 53, 13);
+}
+
+a.active{
+    font-weight: 1000;
+    color: rb(146, 3, 3);
+    text-decoration: underline;  
+}
+#menuList li:hover{
+    background-color:rgb(222, 236, 227);
+    cursor: pointer;
+    border:1px;  
+    border-right: 0px;
+    border-color: rgb(4, 92, 48);
+    border-style: solid;
+    border-top-left-radius: 4%;  
+    border-bottom-left-radius: 4%; 
+}
+.material-icons{
+    color: rgb(31, 71, 4);
+    margin-right:8px;
+    margin-top: 0px;
+}
+#menuBar p{
+    text-align: center;
+}
+/*MAIN CONTENT AREA*/
+.mainContainer{
+    background-color:rgb(222, 236, 227);
+    grid-area: content;
+    overflow:auto;
+}
+/*STYLING ALL THE PARTIALS*/
+.partials{
+    color: rgb(15, 53, 13);
+    background-color:rgb(166, 197, 178);
+
+}
+
+/*STYLING THE FOOTER*/
+#footer{
+    grid-area: footer;
+    display: grid;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    right:0;
+    left:0;
+    height:30px;
+
+}

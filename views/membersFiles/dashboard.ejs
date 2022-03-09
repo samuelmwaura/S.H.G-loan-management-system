@@ -1,0 +1,68 @@
+<%-include('.././partials/header.ejs') %>
+<body>
+<main class="mainBody">
+<%-include('.././partials/navigationbar.ejs')%>
+<%-include('.././partials/sideNavBar.ejs')%>
+<div class='mainContainer'>
+    <div id="dashboardDiv">
+    <div id="memberSide">
+        <div class='sectionHead'> Individual Finances</div>
+        <div class="figures">
+            <div class='records'>
+                <div>Kshs.<%=figures.savings%><br>
+                <p>Your Savings as at Now.</p></div>
+            </div>
+            <div class='records'>
+                <div><%if(borrower){%>
+                    Kshs.<%=borrower.amount%>
+                <%}else{%>
+                     Kshs. 0.00
+                <%}%><br>
+                    <p>Loan Balance  as at now</p>
+            </div>            
+        </div>
+        </div>
+        <div id="Alerts" class="sectionHead">Alerts</div>
+        <div  id="alerts">
+            <P>All member alerts from the group will appear here!!</P>
+            
+        </div>
+        </div>
+    <div id="groupSide">
+        <div class='sectionHead'>Group Finances</div>
+        <div class="figures">
+            <div>
+               <P>Below is the group financial Summary.</p>
+               <table id="summariesTable">
+                   <th>ENTRY</th>
+                   <th>AMOUNT</th>
+                   <tr>
+                       <td>Total Savings</td>
+                       <td>Kshs. <%=summations[0].totalSavings%></td>                                      
+                   </tr>
+                   <tr>
+                       <td>Total Welfare</td>
+                       <td>Kshs. <%=summations[0].totalWelfare%></td>
+                   </tr>
+                   <tr>
+                       <td>Outstanding<br>Total Loans</td>
+                       <td><%if(totalLoans[0].totalLoans){%>                           
+                        Kshs. <%=totalLoans[0].totalLoans%>
+                    <%}else{%>
+                        Kshs. 0.00
+                        <%}%>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Savings<br>after Loans</td>                        
+                        <td>Kshs. <%=summations[0].totalSavings-totalLoans[0].totalLoans%></td>
+                    </tr>
+               </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<%-include('.././partials/footer.ejs')%>
+</main>
+</body>

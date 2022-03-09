@@ -1,0 +1,88 @@
+<%-include('.././partials/header.ejs') %>
+<body>
+<main class="mainBody">
+<%-include('.././partials/navigationbar.ejs')%>
+<%-include('.././partials/sideNavBar.ejs')%>
+<div class='mainContainer'>
+    <div id="dashboardDiv">
+    <div id="memberSide">
+<div class="sectionHead">Capture Member Contribution</div>
+     <div id=contributionsForm>
+         <form action="/postContribution" method="post" onsubmit="confirm('Check To see that Amounts are Okay')">
+            <label for="member" class="contributionInputLabels">Select Member:</label> <select name="member" id="member"  class="contributionInputs" required style="width: 16em;" onchange="checkLoan()">
+                <option selected disabled>Select Member</option>
+                <%if(members.length>0){%>
+                    <%members.forEach(member=>{%>
+                <option value="<%-member.phone%>"><%=member.firstName+'   '+member.lastName%></option>
+                    <%});%>
+                <%}%>
+             </select><br>  
+             <label for="savings" class="contributionInputLabels">Savings:</label><input type="number" name="savings" class="contributionInputs" required ><br>
+             <small id="loanPresenceIndicator"></small><br>
+             <label for="amount" class="contributionInputLabels">Loan:</label><input type="number" name="loan" class="contributionInputs" required ><br>
+             <label for="welfare" class="contributionInputLabels">Welfare:</label><input type="number" name="welfare" class="contributionInputs" required ><br>
+
+             <!-- <label for="amount" class="contributionInputLabels">Fine:</label><input type="text" name="fine" class="contributionInputs" required ><br> -->
+              
+             <button type="submit">Post</button> 
+            
+            </form>
+     </div>
+        </div>
+    <div id="groupSide">
+        <div class='sectionHead'>Group Balances Update</div>
+        <div class="figures">
+            <div>
+               <table id="summariesTable">
+                   <th>ENTRY</th>
+                   <th>AMOUNT</th>
+                   <tr>
+                       <td>Total Savings</td>
+                       <td>Kshs. <%=summations[0].totalSavings%></td>                                      
+                   </tr>
+                   <tr>
+                       <td>Total Welfare</td>
+                       <td>Kshs. <%=summations[0].totalWelfare%></td>
+                   </tr>
+                   <tr>
+                       <td>Outstanding<br>Total Loans</td>
+                       <td><%if(totalLoans[0].totalLoans){%>                           
+                        Kshs. <%=totalLoans[0].totalLoans%>
+                    <%}else{%>
+                        Kshs. 0.00
+                        <%}%>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>Savings<br>after Loans</td>                        
+                        <td>Kshs. <%=summations[0].totalSavings-totalLoans[0].totalLoans%></td>
+                    </tr>
+               </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $().ready(function(){
+    $('input[name="savings"]').val(500);
+    $('input[name="welfare"]').val(200);
+    })
+
+    const checkLoan=()=>{
+      const loaneePhone=$('select[name="member"]').val();
+      const loanPresenceIndicator = document.querySelector('#loanPresenceIndicator');
+      const targetEndpoint=`/checkLoanPresence/${loaneePhone}`;
+      fetch(targetEndpoint,{method:'GET'}).then(response=>response.json()).then(jsonatedResponse=>{
+        loanPresenceIndicator.innerHTML=jsonatedResponse.loanPresenceIndicator;
+        if(jsonatedResponse.loanPresenceIndicator=='Has no loan'){
+        $('input[name="loan"]').attr('readOnly','true');
+        }
+      }).catch(err=>alert(err));
+    }
+</script>
+
+
+</div>
+<%-include('.././partials/footer.ejs')%>
+</main>
+</body>

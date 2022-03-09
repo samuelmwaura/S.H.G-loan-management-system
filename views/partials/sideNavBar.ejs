@@ -1,0 +1,31 @@
+<div id="sideNavBar"  >
+<div id ="menuBar" class="partials">
+    <ul id="menuList">
+        <a href="/dashboard"><li><span class="material-icons">dashboard</span>Dashboard</li></a>
+        <a href="/memberspanel"><li><span class="material-icons">people</span>Member Panel</li></a>
+        <a href="/loans"><li><span class="material-icons">credit_score</span>Application</li></a>
+        <a href="/alerts"><li><span class="material-icons">payments</span>Loan</li></a>
+        <a href="/contributions"><li><span class="material-icons">money</span>Contributions</li></a>
+        <!-- <a href="#9"><li><span class="material-icons">money_off</span>Fines</li></a> -->
+        <a href="/reports"><li><span class="material-icons">summarize</span>Reports</li></a>
+        <a href="/createUser" class="logout"><li><span class="material-icons">settings</span>Settings</li></a>
+        <a  onclick="logoutConfirm()"><li><span class="material-icons">logout</span>Logout</li></a>
+
+    </ul>
+    <script type="text/javascript">
+    const currentLink=location.href;
+    const items = document.querySelectorAll('a');
+    const itemsLength= items.length;
+    items.forEach(element => {
+        if(element.href===currentLink){
+            element.className="active";
+        }
+    });
+
+     const logoutConfirm=()=>{
+         if(confirm('Unsaved changes may be lost,logout?'))window.location='/logout' ;
+     }
+    </script>
+    <p>Joymakers<br> SHG</p>
+</div>
+</div>

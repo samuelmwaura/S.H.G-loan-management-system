@@ -1,0 +1,203 @@
+<%-include('../.././partials/header.ejs') %>
+<body>
+<main class="mainBody">
+<%-include('../.././partials/navigationbar.ejs')%>
+<%-include('../.././partials/sideNavBar.ejs')%>
+<div class='mainContainer'>        
+    <div class="registrationForm">
+        <form action="/registerUser" method="post" id='createUser'">
+        <div id="dataInputs">
+        <p>Input User credentials.</p>
+        <label for="submittedRequest">Member: </label><select id="submittedRequest" onchange="getOption()" name="submittedRequest" required>
+        <option selected disabled>Select an existing Member</option>
+             <%if(options.length>0){%>
+             <%options.forEach(option=>{%>
+         <option value='<%-option.firstName%>' class="<%-option.firstName%>"><%-option.firstName + " "+ option.lastName%></option>
+             <%})%>                  
+        <%}else{%>
+            <p>Existing members without system <br>access appear here</p>
+       <%}%>
+        </select><br>
+        <script>
+
+//THIS JAVASCRIPT CODE SUGGESTS A DEFAULT PASSWORD FOR A USER AND SETS PROPERTIES FOR IT
+   function getOption(){
+       const selectedUser= document.getElementById('submittedRequest').value;
+       const elements=document.getElementsByName('userName');
+       const qualityChecker=document.getElementById('qualityChecker');
+
+        elements.forEach(element=>{
+           element.value=selectedUser;
+       })  
+       
+       
+       document.getElementsByName('password').forEach(element=>{
+            element.value=`${selectedUser}!1234`;
+       });
+
+       //INDICATING THE PHONE nUMBER IN THE RESPECTIVE BOX
+       const phone = document.getElementsByName('phone');
+       const selectedUserPhone  = document.querySelector('#submittedRequest').className;
+       phone.forEach(element=>{
+           element.value = selectedUserPhone;
+       });
+
+
+
+       //SUGGESTING A PASSWORD
+       document.getElementById('suggestion').innerHTML=`Suggested default password is: ${selectedUser}!1234`;
+       qualityChecker.style.display= 'inline';
+       qualityChecker.textContent = "Good Password Qualities met.";
+       qualityChecker.style.color = 'green';    
+       qualityChecker.style.fontSize= "15px";  
+
+    const password = document.getElementById("password");
+    password.addEventListener('input',()=>{
+    const testRegex = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,})');
+    if(!testRegex.test(password.value)){
+      qualityChecker.textContent='Include a small and capital letter,digit ,special character!'
+      qualityChecker.style.color ="red";
+    } else{
+      qualityChecker.textContent='Good Password qualities met'
+      qualityChecker.style.color ="green";
+    }
+    });
+    }
+        </script>
+        <!--<label for="phone">Mobile No:</label><input type="tel" pattern="[07]{2}[0-9]{2}[0-9]{3}[0-9]{3}" name="phone" placeholder="phone number" required oninvalid="this.setCustomValidity('Enter a valid Phone number.07...')"><br>-->
+        <label for="userName">Username:</label><input type="text" name="userName" placeholder="username" required><br>
+        <label for="password">Password:</label><input type="password" name="password" placeholder="password" id='password' required><br> 
+               <small id="suggestion"></small><br>
+               <small id="qualityChecker"></small><br>
+                <label for="confirmPassword">Confirm:  </label><input type="password" name="confirmPassword" placeholder="Confirm Password" id='password' required><br> 
+           <small> <%if(message)%>
+            <%-message%>%>
+            <%if(confirmation)%>
+            <%-confirmation%>
+           </small>
+        <div>   
+        <button type="submit">Create</button>
+        </div> 
+        </div>
+
+       </form>
+
+<!-- OFFICIAL CHANGING AND CREATION -->
+
+<form action="/createOfficial" method="post" style="display:none;" id="createOfficial" data-doc="<%=admin%>">
+    <div id="dataInputs">
+    <p>System Official Creation and Change.</p>
+    <label for="existingMember">Member: </label><select id="existingMember" onchange="checkIfThemselves()" name="memberPhone" required>
+    <option selected disabled>Select an existing Member</option>
+         <%if(options.length>0){%>
+         <%options.forEach(option=>{%>
+     <option value='<%-option.phone%>' class="<%-option.firstName%>"><%-option.firstName + " "+ option.lastName%></option>
+         <%})%>                  
+    <%}else{%>
+        <p>Existing members without system <br>access appear here</p>
+   <%}%>
+    </select><br>
+
+    <small id="validate" style="color: red;"></small><br>
+
+    <!--<label for="phone">Mobile No:</label><input type="tel" pattern="[07]{2}[0-9]{2}[0-9]{3}[0-9]{3}" name="phone" placeholder="phone number" required oninvalid="this.setCustomValidity('Enter a valid Phone number.07...')"><br>-->
+    <!-- <label for="userName">Role:</label><input type="text" name="role" placeholder="Group Role" required><br> -->
+    <label for="role">Official Role</label><select name="role" id="roles" required>
+        <option value="Chairman" selected>Chairman</option>
+        <option value="Secretary">Secretary</option>
+        <option value="Treasurer">Treasurer</option>
+    </select><br>
+    <small id="done" style="color: green;"></small><br>    
+    <div>   
+    <pre><button type="button" onclick="createOfficial()">Create</button>            <button type="button" onclick="editOfficial()">Edit</button>     <button type="button" onclick="showCreateUser()">make User</button></pre>
+    </div> 
+    </div>
+
+   </form>
+
+
+
+
+       <div id="list">
+        <p>Existing Members System users.</p>
+        <ol>
+            <%if(options.length>0){%>
+                <%options.forEach(option=>{%>
+            <li><%-option.firstName + " "+ option.lastName%></li>
+                <%})%>                  
+           <%}%>
+        </ol>
+       </div>
+    </div>
+<script>
+    $(document).ready(function(){
+        const createOfficial= document.getElementById('createOfficial');
+        const createUser= document.getElementById('createUser');
+        if(createOfficial.dataset.doc==='yes'){
+        createOfficial.style.display='block';
+        createUser.style.display='none';    
+    }else{
+        $('#createOfficial').hide();
+        $('#createUser').show();
+    }
+});
+
+const validate=document.getElementById('validate');
+const done=document.getElementById('done');
+
+const checkIfThemselves=()=>{
+if($('#existingMember').val()==789467598){
+validate.innerHTML = 'You cannot select yourself to be an official.';
+}
+  }
+
+
+const createOfficial=()=>{
+officialObject={role:$('#roles').val(),memberPhone:$('#existingMember').val()}
+targetEndpoint='/createOfficial';
+options={
+    method:'POST',
+    headers:{'Content-Type': 'application/json'},
+    body:JSON.stringify(officialObject)
+}
+fetch(targetEndpoint,options).then(response=>response.json(0)).then(jsonatedResponse=>{
+   validate.innerHTML=jsonatedResponse.validation;
+   done.innerHTML=jsonatedResponse.done;
+
+}).catch(0);
+}
+
+
+const editOfficial=()=>{
+    if(confirm('You are just about to change a group official!!')){
+officialObject={role:$('#roles').val(),memberPhone:$('#existingMember').val()}
+targetEndpoint='/editOfficial';
+options={
+    method:'POST',
+    headers:{'Content-Type': 'application/json'},
+    body:JSON.stringify(officialObject)
+}
+fetch(targetEndpoint,options).then(response=>response.json(0)).then(jsonatedResponse=>{
+   done.innerHTML=jsonatedResponse.done;
+}).catch(0);
+}
+
+    };
+
+const showCreateUser=()=>{
+    const createOfficial= document.getElementById('createOfficial');
+    const createUser= document.getElementById('createUser');        
+        createOfficial.style.display='none';
+        createUser.style.display='block';      
+}
+
+
+
+
+
+
+</script>
+
+<%-include('../.././partials/footer.ejs')%>
+</main>
+</body>

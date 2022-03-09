@@ -1,0 +1,158 @@
+#main{
+    text-align: center;
+    margin: auto;
+    height:43em;
+    width: 40em; 
+    position: relative;
+    border: 1px solid;
+    border-bottom-left-radius: 3%;
+    border-bottom-right-radius: 3%;
+    display: grid;
+    align-items: center;
+}
+#main::before{
+      content: "";
+      background-image: url('../images/loginBackgroundImage.jpg');
+      background-size: cover;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.3;
+}
+#loginPane{
+    position: relative;
+    background-color: transparent;
+    z-index:2;
+    height: 100%;
+    width: 100%;
+    border-radius: 3%;
+    border: 1px ;
+}
+#title{
+    background-color:rgb(166, 197, 178);
+    position: absolute;
+    right: 0;
+    left:0;
+    top: 0;        
+    display: flex;
+    flex-direction:row;
+   align-items: center;
+}
+#title h2{
+    font-size: 35px;
+    margin-right:200px;
+}
+#groupLogo{
+    width:130px;
+    border-radius:20%;    
+    height: 95px;
+    margin:2px auto;
+    margin-left: 2px;
+}
+#title h2 div{
+margin-top: 0px;
+}
+#inputs{
+    margin-top: 200px;
+}
+/*STYLING THE CONTENTS OF THE CREATE USER PAGE*/
+#dataInputs{
+    margin:auto;
+    border:1px;
+    border-style: solid;  
+    border-color:cadetblue;  
+    border-radius: 2%;
+    width:100%;
+    height:800px;
+    grid-area: form;
+
+}
+#list{
+    border:1px;
+    border-style: solid;  
+    border-color:cadetblue;  
+    border-radius: 2%;
+    text-align: left;
+    padding-left: 40px;
+}
+#list p{
+    font-weight: bold;
+}
+#dataInputs div{
+    text-align: left;
+    margin-top: 1.5em;
+    margin-left:14.5em;
+    }
+.registrationForm{
+    display: grid;
+    text-align: center;
+    grid-template-columns: 70% 1fr;
+    grid-template-areas: 'form' 'list';
+    column-gap:5px;
+}
+#inputs input,#dataInputs input,select,textarea{
+    margin: 10px auto;
+    height: 2em;
+    width:23em;
+    border: 1px cadetblue solid;
+    border-radius:4%;
+    font-size: 1.2em;
+}
+#dataInputs textarea{
+    width: 28.5em;
+    height: 4.5em;
+}
+
+
+
+#inputs p,#dataInputs p{
+    font-size:1.7em;
+    font-weight: 600;
+    color: rgb(3, 54, 56);
+}
+#dataInputs small{
+    color: red;
+    font-size: 22px;
+}
+#dataInputs #suggestion{
+    color: green;
+    font-size:15px;
+}
+#dataInputs label{
+    font-size: 23px;
+    color: inherit;
+    margin-right: 15px;
+    width:40px;
+    margin-right:2em;
+}
+#qualityChecker{
+    display:none;
+}
+#inputs button,#dataInputs button{
+    width:7em;
+    font-size: 1.2em;
+    font-weight: 700;
+    color: rgb(3, 54, 56);
+    background-color:rgb(166, 197, 178);
+    border-radius: 5%;
+    margin-left:0em;
+}
+#inputs .error{
+    font-size:1em;
+    color: brown;
+}
+#inputs div{
+    text-align: left;
+    margin-top: 1.5em;
+    margin-left:6em;
+}
+#inputs div small,#dataInputs div small{
+    font-size: 1em;
+}
+#inputs div a,#dataInputs div a{
+    font-size: 1.2em;
+    margin-left: 5px;
+    color:rgb(7, 79, 82);
+}

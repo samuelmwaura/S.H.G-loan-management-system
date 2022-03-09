@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./loginAndOutStyles/loginOutFiles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Document</title>
+</head>
+<body>
+    <div id="main">
+    <div id="loginPane">
+        
+        <form action="/registerUser" method="post">
+        <div id="inputs">
+        <p>Input User credentials.</p>
+        <select>
+        <option>Select an approved requestor</option>
+             <%if(options.length>0){%>
+             <%options.forEach(option=>{%>
+         <option><%-option.firstName + " "+ option.lastName%></option>
+             <%})%>                  
+        <%}%>
+
+        </select>
+        <input type="text" maxlength="8"  min='0' name="memberId" placeholder="National ID number" pattern="[1-9]{8}" oninvalid="this.setCustomValidity('Enter a valid Natinal ID')" required><br>
+        <input type="tel" name="phone" placeholder="phone number"><br>
+        <input type="text" name="userName" placeholder="username" required><br>
+        <input type="password" name="password" placeholder="password" required><br> 
+        <input type="password" name="confirmPassword" placeholder="Confirm Password" required><br> 
+        <p class="error">
+            <%if(message)%>
+            <%-message%>%>
+            <%if(confirmation)%>
+            <p><%-confirmation%></p>
+        </p>
+            
+        <div>     
+        <button type="submit">Create</button>
+       </form>
+        </div>  
+        </div>
+</div>
+    
+</body>
+</html>

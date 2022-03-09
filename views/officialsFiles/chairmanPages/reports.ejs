@@ -1,0 +1,429 @@
+
+<body>
+    <%-include('../.././partials/header.ejs') %>
+    <main class="mainBody">
+    <%-include('../.././partials/navigationbar.ejs')%>
+    <%-include('../.././partials/sideNavBar.ejs')%>
+    <div class='mainContainer'>
+<div id="reportheaders">
+<div class="reportheaders" id="loans">loans</div>
+<div class="reportheaders" id="contributions">Contributions</div>
+</div>
+<div id="reportContents">
+    <div class='reportLists' id="loans">
+        <div class="categories">
+        <div class="onclick" id="outstandingCategory"><a href="" onclick="displayoutstandingLoansDiv()">Outstanding Loans</a></div>|
+        <div id="declinedCategory"><a href="" onclick='displayDeclinedLoansDiv()'>Declined Loans</a></div>|
+        <div id="LoansInProgressCategory"><a href="" onclick='displayLoansInProgressDiv()'>Loans in progress</a></div>
+       </div>
+       <div data-doc="<%=allowedPdfGenerator%>" id="outstandingLoansDiv">
+        <div class='pdfGenerators'><pre>                                                                       <a href="/outstandingLoansReport" onclick="alert('Downloading OutstandingLoans Report.')" style="font-size: 16px;">Outstanding loans Report></a></pre></div>
+        <table id="outstandingLoans" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>LoanId</th>
+                    <th>Loan-type</th>
+                    <th>Amount</th>
+                    <th>Purpose</th>
+                    <th>Chartels</th>
+                    <th>Guarantor 1</th>
+                    <th>Guarantor 2</th>
+                    <th>Guarantor 3</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%if(allOutstandingLoans.length>0){%>
+                    <%allOutstandingLoans.forEach(loan=>{%>
+                <tr><td><%=loan.loanId%></td>
+                    <td><%=loan.applicant%></td>
+                    <td><%=loan.amount%></td>
+                    <td><%=loan.purpose%></td>
+                    <td><%=loan.chartels%></td>
+                    <td><%=loan.guarantor1%></td>
+                    <td><%=loan.guarantor2%></td>
+                    <td><%=loan.guarantor3%></td>
+                    <%})%>                 
+                <%}%>
+            </tr>
+            </tbody>
+            <tfoot>
+               
+            </tfoot>
+        </table>
+    </div>
+
+    
+
+<!--LOANS IN PROGRESS DIV--> 
+
+<div id="loansInProgressDiv">
+    <div class='pdfGenerators'><pre>                                                                       <a href="/loansInProgressReport" style="font-size: 16px;" onclick="alert('Downloading Loans in progress Report')">Progressing loans Report></a></pre></div>
+    <table class='display' id="LoansInProgress">
+        <thead>
+        <tr>
+            <th>LoanId</th>
+            <th>Loan-type</th>
+            <th>Amount</th>
+            <th>Purpose</th>
+            <th>Chartels</th>
+            <th>Guarator 1</td>
+             <th>Guarantor 2</th>
+             <th>Guarantor 3</th>
+        </tr> 
+        </thead>
+        <tbody>
+            <%if(loansInProgress.length>0){%>
+                <%loansInProgress.forEach(loan=>{%>
+            <tr><td><%=loan.loan_Id%></td>
+                <td><%=loan.loan_type%></td>
+                <td><%=loan.Amount%></td>
+                <td><%=loan.purpose%></td>
+                <td><%=loan.chartels%></td>
+                <td><%=loan.guarantor1%></td>
+                <td><%=loan.guarantor2%></td>
+                <td><%=loan.guarantor3%></td>
+                <%})%>                 
+            <%}%>
+        </tr>
+        </tbody>
+        <tfoot>
+            
+        </tfoot>
+    </table>
+</div>
+
+<!--DECLINED LOANS DIV-->
+<div id="declinedLoansDiv">
+    <div class='pdfGenerators'><pre>                                                                       <a href="/declinedLoansReport" style="font-size: 16px;" onclick="alert('Downloading The Declined Loans Report')">Declined loans Report></a></pre></div>
+    <table class='display' id="declinedLoans">
+        <thead>
+        <tr>
+            <th>LoanId</th>
+            <th>Applicant</th>
+            <th>Amount</th>
+            <th>Purpose</th>
+            <th>Chartels</th>
+            <th>Guarator 1</td>
+             <th>Guarantor 2</th>
+             <th>Guarantor 3</th>
+        </tr>   
+        </thead>
+        <tbody>
+            <%if(declinedLoans.length>0){%>
+                <%declinedLoans.forEach(loan=>{%>
+            <tr><td><%=loan.loanId%></td>
+                <td><%=loan.applicant%></td>
+                <td><%=loan.amount%></td>
+                <td><%=loan.purpose%></td>
+                <td><%=loan.chartels%></td>
+                <td><%=loan.guarantor1%></td>
+                <td><%=loan.guarantor2%></td>
+                <td><%=loan.guarantor3%></td>
+                <%})%>                 
+            <%}%>
+        </tr>
+        </tbody>
+        <tfoot>
+           
+        </tfoot>
+    </table>
+</div>
+
+    </div>
+
+    <div class='reportLists' id="contribution">
+        <div class="categories">
+            <div class="onclick"  id='memberFinancesCategory'><a href="" onclick="displaymemberFinancesDiv()"> Member Finances</a></div>
+        </div>
+        <div id="MemberFinancesDiv">
+            <div class='pdfGenerators'><pre>                              <a href="/memberFinancesReport" style="font-size: 16px;" onclick="alert('Downloading Member Finances Report')">Member Finances Report></a></pre></div>
+            <table class='display' id="memberFinancesProgress">
+                <thead>
+                <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Savings</th>
+                        <th>Welfare</th>
+                </tr> 
+                </thead>
+                <tbody>
+                    <%if(members.length>0){%>
+                        <%members.forEach(member=>{%>
+                    <tr><td><%=member.firstName +" "+member.lastName%></td>
+                        <td>0<%=member.phone%></td>
+                        <td><%=member.savings%></td>
+                        <td><%=member.welfare%></td>
+                        <%})%>                 
+                    <%}%>
+                </tr>
+                </tbody>
+                <tfoot>
+                   
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+      <script>
+function displayoutstandingLoansDiv(){
+    window.event.preventDefault();
+    const outstandingLoansDiv = document.querySelector('#outstandingLoansDiv');
+    const declinedLoansDiv = document.querySelector('#declinedLoansDiv');
+    const loansInProgressDiv = document.querySelector('#loansInProgressDiv');
+
+    const declinedCategory= document.querySelector('#declinedCategory');
+    const outstandingCategory = document.querySelector('#outstandingCategory');
+    const LoansInProgressCategory= document.querySelector('#LoansInProgressCategory');
+
+    outstandingLoansDiv.style.display='block';
+    declinedLoansDiv.style.display='none';
+    loansInProgressDiv.style.display='none';
+
+    declinedCategory.className='';
+    outstandingCategory.className='onclick';
+    LoansInProgressCategory.className='';   
+    
+}
+
+
+
+
+function displayDeclinedLoansDiv(){
+    window.event.preventDefault();
+    const outstandingLoansDiv = document.querySelector('#outstandingLoansDiv');
+    const declinedLoansDiv = document.querySelector('#declinedLoansDiv');
+    const loansInProgressDiv = document.querySelector('#loansInProgressDiv');
+
+    const declinedCategory= document.querySelector('#declinedCategory');
+    const outstandingCategory = document.querySelector('#outstandingCategory');
+    const LoansInProgressCategory= document.querySelector('#LoansInProgressCategory');
+
+    outstandingLoansDiv.style.display='none';
+    declinedLoansDiv.style.display='block';
+    loansInProgressDiv.style.display='none';
+
+    declinedCategory.className='onclick';
+    outstandingCategory.className='';
+    LoansInProgressCategory.className='';
+
+
+}
+function displayLoansInProgressDiv(){
+    window.event.preventDefault();
+    const outstandingLoansDiv = document.querySelector('#outstandingLoansDiv');
+    const declinedLoansDiv = document.querySelector('#declinedLoansDiv');
+    const loansInProgressDiv = document.querySelector('#loansInProgressDiv');
+    const declinedCategory= document.querySelector('#declinedCategory');
+    const outstandingCategory = document.querySelector('#outstandingCategory');
+    const LoansInProgressCategory= document.querySelector('#LoansInProgressCategory');
+    outstandingLoansDiv.style.display='none';
+    declinedLoansDiv.style.display='none';
+    loansInProgressDiv.style.display='block';
+
+    declinedCategory.className='';
+    outstandingCategory.className='';
+    LoansInProgressCategory.className="onclick";
+
+    
+}
+
+function displaymemberFinancesDiv(){
+    window.event.preventDefault();
+    const outstandingLoansDiv = document.querySelector('#outstandingLoansDiv');
+    const declinedLoansDiv = document.querySelector('#declinedLoansDiv');
+    const loansInProgressDiv = document.querySelector('#loansInProgressDiv');
+    const memberFinancesDiv = document.querySelector('#memberFinancesDiv');
+
+    const declinedCategory= document.querySelector('#declinedCategory');
+    const outstandingCategory = document.querySelector('#outstandingCategory');
+    const LoansInProgressCategory= document.querySelector('#LoansInProgressCategory');
+    const memberFinancesCategory = document.querySelector('#memberFinancesCategory');
+
+    outstandingLoansDiv.style.display='block';
+    declinedLoansDiv.style.display='none';
+    loansInProgressDiv.style.display='none';
+    memberFinancesDiv.style.display='block';
+
+    declinedCategory.className='';
+    outstandingCategory.className='onclick';
+    memberFinancesCategory.className='onclick';
+    LoansInProgressCategory.className="";
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//GENERATING OUTSTANDINGLOANS REPORTS
+// function generateOutstandingLoanReport(){
+//     window.event.preventDefault();
+//     const targetEndpoint="/outstandingLoansReport";
+//      fetch(targetEndpoint,{method:'GET'}).then(r
+//      //receivedData.json()
+//      //.then(jsonatedData=>{
+//     // alert(jsonatedData);
+
+//     // const outstandingLoans = document.querySelector('#outstandingLoans');
+//     // jsonatedData.forEach(loan => {   
+//     //     const tableBody=document.querySelector('tbody');
+//     //     const tableRow = document.createElement('tr');
+//     //     const LoanId = document.createElement('td');
+//     //     const applicant = document.createElement('td');
+//     //     const Amount = document.createElement('td');
+//     //     const purpose = document.createElement('td');
+//     //     const chartels = document.createElement('td');
+//     //     const guarantor1= document.createElement('td');
+//     //     const guarantor2= document.createElement('td');
+//     //     const guarantor3= document.createElement('td');        
+
+//     //     LoanId.innerHTML = loan.loanId;
+//     //     applicant.innerHTML = loan.applicant;
+//     //     Amount.innerHTML = loan.amount;
+//     //     purpose.innerHTML = loan.purpose;
+//     //     chartels.innerHTML = loan.chartels;
+//     //     guarantor1.innerHTML = loan.guarantor1;
+//     //     guarantor2.innerHTML = loan.guarantor2;
+//     //     guarantor3.innerHTML = loan.guarantor3;
+
+//     //     tableRow.appendChild(LoanId);
+//     //     tableRow.appendChild(applicant);
+//     //     tableRow.appendChild(Amount);
+//     //     tableRow.appendChild(purpose);
+//     //     tableRow.appendChild(chartels);
+//     //     tableRow.appendChild(guarantor1);
+//     //     tableRow.appendChild(guarantor2);
+//     //     tableRow.appendChild(guarantor3);
+//     //     tableBody.appendChild(tableRow);
+//     //     //outstandingLoans.appendChild(tableBody);
+//     // });
+//     // }).catch(err=>alert(err))
+//     ).catch(err=>alert(err));
+// }
+
+//GENERATING DECLINED LOANS REPORT
+
+
+function generateDeclinedLoanReport(){
+    window.event.preventDefault();
+    const targetEndpoint="/declinedLoansReport";
+    fetch(targetEndpoint,{method:'GET'}).then(receivedData=>receivedData.json().then(jsonatedData=>{
+    alert(jsonatedData);
+
+    const outstandingLoans = document.querySelector('#declinedLoans');
+    jsonatedData.forEach(loan => {   
+        const tableBody=document.createElement('tbody');
+        const tableRow = document.createElement('tr');
+        const LoanId = document.createElement('td');
+        const Loan_type = document.createElement('td');
+        const Amount = document.createElement('td');
+        const purpose = document.createElement('td');
+        const chartels = document.createElement('td');
+        const guarantor1= document.createElement('td');
+        const guarantor2= document.createElement('td');
+        const guarantor3= document.createElement('td');        
+
+        LoanId.innerHTML = loan.loan_Id;
+        Loan_type.innerHTML = loan.loan_type ;
+        Amount.innerHTML = loan.Amount;
+        purpose.innerHTML = loan.purpose;
+        chartels.innerHTML = loan.chartels;
+        guarantor1.innerHTML = loan.guarantor1;
+        guarantor2.innerHTML = loan.guarantor2;
+        guarantor3.innerHTML = loan.guarantor3;
+
+        tableRow.appendChild(LoanId);
+        tableRow.appendChild(Loan_type);
+        tableRow.appendChild(Amount);
+        tableRow.appendChild(purpose);
+        tableRow.appendChild(chartels);
+        tableRow.appendChild(guarantor1);
+        tableRow.appendChild(guarantor2);
+        tableRow.appendChild(guarantor3);
+        tableBody.appendChild(tableRow);
+        declinedLoans.appendChild(tableBody);
+    });
+    }).catch(err=>alert(err))).catch(err=>alert(err));
+}
+
+//GENERATING LOANS IN PROGRESS REPORTS
+
+
+function generateLoansInProgressReport(){
+    window.event.preventDefault();
+    const targetEndpoint="/LoansInProgressReport";
+    fetch(targetEndpoint,{method:'GET'}).then(receivedData=>receivedData.json().then(jsonatedData=>{
+    alert(jsonatedData);
+
+    const outstandingLoans = document.querySelector('#LoansInProgress');
+    jsonatedData.forEach(loan => {   
+        const tableBody=document.createElement('tbody');
+        const tableRow = document.createElement('tr');
+        const LoanId = document.createElement('td');
+        const Loan_type = document.createElement('td');
+        const Amount = document.createElement('td');
+        const purpose = document.createElement('td');
+        const chartels = document.createElement('td');
+        const guarantor1= document.createElement('td');
+        const guarantor2= document.createElement('td');
+        const guarantor3= document.createElement('td');        
+
+        LoanId.innerHTML = loan.loan_Id;
+        Loan_type.innerHTML = loan.loan_type ;
+        Amount.innerHTML = loan.Amount;
+        purpose.innerHTML = loan.purpose;
+        chartels.innerHTML = loan.chartels;
+        guarantor1.innerHTML = loan.guarantor1;
+        guarantor2.innerHTML = loan.guarantor2;
+        guarantor3.innerHTML = loan.guarantor3;
+
+        tableRow.appendChild(LoanId);
+        tableRow.appendChild(Loan_type);
+        tableRow.appendChild(Amount);
+        tableRow.appendChild(purpose);
+        tableRow.appendChild(chartels);
+        tableRow.appendChild(guarantor1);
+        tableRow.appendChild(guarantor2);
+        tableRow.appendChild(guarantor3);
+        tableBody.appendChild(tableRow);
+        LoansInProgress.appendChild(tableBody);
+    });
+    }).catch(err=>alert(err))).catch(err=>alert(err));
+}
+
+
+
+
+$(document).ready( function () {
+$('.display').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'print'
+        ]
+    });
+//DISPLAYING PRINT FOR OFFICIALS ONLY
+const outstandingLoansDiv=document.querySelector('#outstandingLoansDiv')
+if(outstandingLoansDiv.dataset.doc=='allowed'){
+    $(".pdfgenerators").toggleClass('PdfGenerators visiblePdfGenerators');   
+}
+else{
+    $('#declinedCategory').hide();
+}});
+
+</script>
+
+    </div>
+    <%-include('../.././partials/footer.ejs')%>
+</main>
+</body>

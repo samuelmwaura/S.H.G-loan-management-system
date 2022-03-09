@@ -1,0 +1,479 @@
+
+<body><%-include('.././partials/header.ejs') %>
+<main class="mainBody">
+<%-include('.././partials/navigationbar.ejs')%>
+<%-include('.././partials/sideNavBar.ejs')%>
+<div class='mainContainer'</div>
+    <div id="mainAlertsPage">
+        <div id="dataCapture"> 
+            <div id="alertPane">
+                <p>This section has information about loans in the Group!!
+                <button onclick="changeDisplay()">view</button></p>
+             </div>
+         
+             <div class="loansAppliedTable">
+                 <h3>Loans actively seeking approvals.</h3>
+                 <table id="applicationsTable" >
+                     <thead>
+                    <tr><th>Loan Id</th>
+                         <th>Applicant</th>
+                         <th>loan Type</th>
+                         <th>Amount</th>
+                         <th>Purpose</th>
+                         <th>Chartels</th>
+                         <th>Applied on</th>
+                         <th>Approve</th>
+                         </tr>
+                        </thead>
+                        
+                    <%if(!applications.length){%>
+                    <p style="color:maroon">There are no active loan applications!!</p>
+                    <%}%>
+                 </table>
+             </div>
+         <script>
+            // function approvalFunction(){
+            // const loanId=document.querySelector('.loanId');   
+            // const button =document.querySelector('.approvalButton');   
+            // const bodyObject={loanId:loanId.dataset.doc,approver:button.dataset.doc};            
+            // const targetEndpoint='/loans/approvals';
+            // const options={
+            //     method:'POST',
+            //     headers:{
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body:JSON.stringify(bodyObject)
+            // }
+            //  fetch(targetEndpoint,options).then(response=>response.json()).then(parsedResponse=>{
+            //      alert(parsedResponse.alert);
+            //      window.location.href=parsedResponse.redirect;
+            //     }).catch(err=>alert(err));
+            // } 
+
+            function changeDisplay(){
+                const alertPane = document.querySelector('#alertPane');
+                const loansAppliedTableDiv= document.querySelector('.loansAppliedTable');
+                const committeeButton=document.querySelector('.button');
+                const applicationsTable= document.querySelector('#applicationsTable');
+                alertPane.style.display="none"; 
+                loansAppliedTableDiv.style.display="block";
+                committeeButton.style.display= 'inline';  
+                
+
+                const targetEndpoint ='/loanWithGuarantors';      
+                fetch(targetEndpoint,{method:'GET'}).then(response=>response.json()).then(workableJson=>{
+                 
+                    workableJson.applications.forEach(application=>{
+                    const tableBody = document.createElement('tbody');
+                    const tableFoot= document.createElement('tfoot');
+                    tableBody.style.backgroundColor='grey';
+                    const row = document.createElement('tr');
+                    const loan= document.createElement('td');
+                    const applicant = document.createElement('td');
+                    const loanType = document.createElement('td');
+                    const amount = document.createElement('td');
+                    const purpose  = document.createElement('td');
+                    const chartels = document.createElement('td');
+                    const appliedOn = document.createElement('td');
+
+                    loan.innerHTML=application.loan_Id;
+                    amount.innerHTML=application.Amount;
+                    applicant.innerHTML=application.memberPhone;
+                    loanType.innerHTML = application.loan_type;
+                    purpose.innerHTML= application.purpose;
+                    chartels.innerHTML = application.chartels;
+                    appliedOn.innerHTML = application.createdAt; 
+                    row.appendChild(loan);  
+                    row.appendChild(applicant);                    
+                    row.appendChild(loanType);
+                    row.appendChild(amount); 
+                    row.appendChild(purpose); 
+                    row.appendChild(chartels); 
+                    row.appendChild(appliedOn); 
+                    tableBody.appendChild(row);
+                    applicationsTable.appendChild(tableBody);
+                    applicationsTable.appendChild(tableFoot);
+                    const approve = document.createElement('td');       
+                  
+
+                    //if(application.guarantor1===workableJson.loggedInUser || application.guarantor2===workableJson.loggedInUser || application.guarantor3===workableJson.loggedInUser)
+                    const thisFunction=(declinedGuarantorColumn)=>{
+                    //alert('Huyu Jamaa ni guarantor');
+                   //Am trying to be able to identify which is the column that this guarantor is in - identified
+                   const approveButton= document.createElement('button');
+                   const declineButton = document.createElement('button');
+                   approveButton.innerHTML ='Approve';
+                   declineButton.innerHTML='Decline';                    
+                   approve.appendChild(approveButton);
+                   approve.appendChild(declineButton);   
+                   
+                   if(workableJson.alreadyApprover.approver){
+                        approve.innerHTML='<span class="material-icons">verified</span>Already Approved';
+                        approve.style.fontWeight="bold";
+                        approveButton.style.display="none";
+                        approveButton.style.display="none";                       
+            }             
+                   
+            approveButton.onclick= function(){
+            approve.innerHTML="Approved";            
+            const bodyObject={loanId:application.loan_Id,approver:workableJson.loggedInUser};            
+            const targetEndpoint='/loans/approvals';
+            const options={
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify(bodyObject)
+            }
+             fetch(targetEndpoint,options).then(response=>response.json()).then(parsedResponse=>{
+                 alert(parsedResponse.alert);
+                 window.location.href=parsedResponse.redirect;
+                }).catch(err=>alert(err));
+            
+                   }                  
+
+               declineButton.onclick =()=>{
+               declineButton.innerHTML="YOU DECLINED";
+               declineButton.disabled="true";
+               approveButton.style.display="none";
+
+               alert('Are you sure you want to decline?');
+              const  targetEndpoint=`/loans/${workableJson.loggedInUser}`;
+              const bodyObject ={decliner:workableJson.loggedInUser,guarantorColumn:declinedGuarantorColumn,applicant:application.memberPhone,amount:application.Amount}
+              const  options={
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify(bodyObject)
+            }        
+
+               fetch(targetEndpoint,options).then(
+                   receivedResponse=>receivedResponse.json()).then(jsonatedReceivedResponse=>{
+                       alert(jsonatedReceivedResponse.message);
+                   }).catch(err=>alert(err));
+               //Nitajuaje ye ni guarantor number ngapi ndio nidelete sasa--USHAJUA            
+
+            }}
+
+            const declineFunction =()=>{
+                approve.innerHTML='Cannot react.Not a guarantor.'
+                approve.style.color='maroon';
+            }
+            
+            // else{ 
+            //             approve.innerHTML='Cannot react.Not a guarantor.'
+            //             approve.style.color='maroon';
+            //         }
+
+  
+           
+                    let declinedGuarantorColumn;
+                     switch(workableJson.loggedInUser){                         
+                         case (application.guarantor1):
+                         declinedGuarantorColumn = 'guarantor1';
+                         //alert(`I  am from the ${declinedGuarantorColumn}`);
+                         thisFunction(declinedGuarantorColumn);
+                         break;
+                         case (application.guarantor2):
+                         declinedGuarantorColumn = 'guarantor2';
+                        // alert(`I  am from the ${declinedGuarantorColumn}`);
+                         thisFunction(declinedGuarantorColumn);
+                         break;
+                         case (application.guarantor3):
+                         declinedGuarantorColumn ='guarantor3';
+                         //alert(`I  am from the ${declinedGuarantorColumn}`);
+                         thisFunction(declinedGuarantorColumn);
+                         break;
+                         default:
+                         declineFunction();
+                         break;
+                     }
+
+                    
+
+                    row.appendChild(approve);
+                    });
+
+                }).catch(err=>alert(err));  
+            
+            }
+
+           function displayCommittee(){
+               const committeeDiv = document.querySelector('#committeeDiv');
+               committeeDiv.style.display ='block';
+               const committeeButton=document.querySelector('.button');
+               committeeButton.style.display='none';
+               //innerHTML='Hide';
+               
+               const approvalLoanId= document.querySelector('.approvalLoanId');
+               const targetEndpoint = `/committeeApproval/${approvalLoanId.dataset.doc}`;
+
+               fetch(targetEndpoint,{
+                method:'GET'
+                }).then(response=>response.json().then(parsedResponse=>{
+                    
+                if(parsedResponse.result==="notOfficial"){
+                    const authentication=document.createElement('p');
+                    //const committeeDiv= document.querySelector('#committeeDiv');
+                    authentication.innerHTML='This section is restricted to the officials only!!';
+                    authentication.style.color='maroon';
+                    authentication.style.fontSize='23px';
+                    committeeDiv.appendChild(authentication);
+                }else{
+                 
+                const header = document.createElement('th');
+                parsedResponse.result.forEach(element => {
+                const committeLoansTable=document.querySelector('.committeeTable');
+                const tableRow = document.createElement('tr');
+                const loanId = document.createElement('td');
+                const applicant = document.createElement('td');
+                const Amount = document.createElement('td');
+                const purpose = document.createElement('td');
+                const appliedOn = document.createElement('td');
+                
+                loanId.innerHTML=element.loan_Id;
+                applicant.innerHTML=element.memberPhone;
+                Amount.innerHTML=element.Amount;
+                purpose.innerHTML=element.purpose;
+                appliedOn.innerHTML=element.createdAt;
+
+                // // approval.onclick=function(){
+                // // alert("This will check whether You are an official and send  the loan to final loans table.");
+                // //  const finalLoan = document.querySelector('#finalLoan');
+                // //  finalLoan.style.display ="block";
+ 
+                // // }
+                //     ;
+
+
+                tableRow.appendChild(loanId);
+                tableRow.appendChild(applicant);
+                tableRow.appendChild(Amount);
+                tableRow.appendChild(purpose);
+                tableRow.appendChild(appliedOn);
+                
+                committeLoansTable.appendChild(tableRow);
+
+
+                if(parsedResponse.official.role==="Chairman"){
+                    const consent = document.createElement('input');
+                    const approval = document.createElement('button');
+                    const decline =document.createElement('button');
+                    const consentWarning= document.createElement('p');
+                    const tableHeaders=document.querySelector('#tableHeaders');
+                    consentWarning.innerHTML ="Make sure you upload the committee consent before posting any loan!!";
+                    consentWarning.style.color="maroon";
+                    consent.type="file";
+                    header.innerHTML="Finish";
+                    approval.innerHTML="Post Loan"
+                    decline.innerHTML='Decline Loan';
+
+
+                    tableHeaders.appendChild(header);
+                    committeeDiv.appendChild(consentWarning);
+                    tableRow.appendChild(consent);
+                    tableRow.appendChild(approval);
+                    tableRow.appendChild(decline);
+                    
+                    approval.onclick= function(){                        
+                       if(confirm("You are about to Post the Loan")){
+                        const finalLoan = document.querySelector('#finalLoan');
+                        const loansAppliedTable= document.querySelector('.loansAppliedTable');
+                        committeeDiv.style.display="none";
+                        loansAppliedTable.style.display="none";                       
+                        finalLoan.style.display ="block";
+
+                    postLoanEndpoint="/postingLoan";
+                    consentFileValue = consent.value;
+                   alert(consentFileValue);
+                    loanObject={loanId:element.loan_Id,applicant:element.memberPhone,loanType:element.loan_type,amount:element.Amount,purpose:element.purpose,chartels:element.chartels,guarantor1:element.guarantor1,guarantor2:element.guarantor2,guarantor3:element.guarantor3,consent:consentFileValue}
+                    fetch(postLoanEndpoint,{
+                        method:"POST",
+                        headers:{'Content-Type': 'application/json'},
+                        body:JSON.stringify(loanObject)
+                    }).then(response=>response.json().then(jsonatedResponse=>{
+                       const row= document.createElement('tr');
+                       const loanId = document.createElement('td');
+                       const Amount = document.createElement('td');
+                       const Applicant= document.createElement('td');
+                       const loanType= document.createElement('td');
+                       const Purpose = document.createElement('td');
+                       const chartels= document.createElement('td');
+                       const finalLoanTable = document.querySelector('#finalLoanTable');
+                       const small= document.querySelector('#notification')
+                       const loansAppliedTable= document.querySelector('.loansAppliedTable');
+
+                        loanId.innerHTML=jsonatedResponse.finalLoan.loanId;
+                        Amount.innerHTML=jsonatedResponse.finalLoan.amount;
+                        Applicant.innerHTML=jsonatedResponse.finalLoan.applicant;
+                        loanType.innerHTML = jsonatedResponse.finalLoan.loanType;
+                        Purpose.innerHTML = jsonatedResponse.finalLoan.purpose;
+                        chartels.innerHTML = jsonatedResponse.finalLoan.chartels;
+
+
+                        row.appendChild(loanId);
+                        row.appendChild(Applicant);
+                        row.appendChild(Amount);
+                        row.appendChild(loanType);
+                        row.appendChild(Purpose);
+                        row.appendChild(chartels);
+                        finalLoanTable.appendChild(row);
+                        finalLoan.removeChild(small);
+   
+                        const heading = document.createElement('p');
+                        const guarantorList = document.createElement('ol');
+                        const firstGuarantor = document.createElement('li');
+                        const secondGuarantor = document.createElement('li');
+                        const thirdGuarantor = document.createElement('li');
+
+                        firstGuarantor.innerHTML=jsonatedResponse.finalLoan.guarantor1;
+                        secondGuarantor.innerHTML=jsonatedResponse.finalLoan.guarantor2;
+                        thirdGuarantor.innerHTML=jsonatedResponse.finalLoan.guarantor3;
+                        heading.innerHTML='This Loan Guarantors are:';
+                        heading.style.marginTop="3em"
+                        finalLoan.appendChild(heading);
+                        guarantorList.style.listStyle="none";
+                        finalLoan.appendChild(guarantorList);
+                        guarantorList.appendChild(firstGuarantor);
+                        guarantorList.appendChild(secondGuarantor);
+                        guarantorList.appendChild(thirdGuarantor);           
+                         
+
+                    })).catch(err=>alert(err));
+                 } }
+
+                 decline.onclick=function(){
+                    if(confirm("confirm Loan Decline!")){
+                        const finalLoan = document.querySelector('#finalLoan');
+                        const loansAppliedTable= document.querySelector('.loansAppliedTable');
+                        const finalLoanHeader = document.querySelector('#finalLoanHeader')
+                        finalLoanHeader.innerHTML="In the Declined Loans.";
+                        committeeDiv.style.display="none";
+                        loansAppliedTable.style.display="none";                       
+                        finalLoan.style.display ="block";
+
+                    postLoanEndpoint="/decliningLoan";
+                    loanObject={loanId:element.loan_Id,applicant:element.memberPhone,loanType:element.loan_type,amount:element.Amount,purpose:element.purpose,chartels:element.chartels,guarantor1:element.guarantor1,guarantor2:element.guarantor2,guarantor3:element.guarantor3}
+                    fetch(postLoanEndpoint,{
+                        method:"POST",
+                        headers:{'Content-Type': 'application/json'},
+                        body:JSON.stringify(loanObject)
+                    }).then(response=>response.json().then(jsonatedResponse=>{
+                       const row= document.createElement('tr');
+                       const loanId = document.createElement('td');
+                       const Amount = document.createElement('td');
+                       const Applicant= document.createElement('td');
+                       const loanType= document.createElement('td');
+                       const Purpose = document.createElement('td');
+                       const chartels= document.createElement('td');
+                       const finalLoanTable = document.querySelector('#finalLoanTable');
+                       const small= document.querySelector('#notification')
+                       const loansAppliedTable= document.querySelector('.loansAppliedTable');
+
+                        loanId.innerHTML=jsonatedResponse.finalLoan.loanId;
+                        Amount.innerHTML=jsonatedResponse.finalLoan.amount;
+                        Applicant.innerHTML=jsonatedResponse.finalLoan.applicant;
+                        loanType.innerHTML = jsonatedResponse.finalLoan.loanType;
+                        Purpose.innerHTML = jsonatedResponse.finalLoan.purpose;
+                        chartels.innerHTML = jsonatedResponse.finalLoan.chartels;
+
+
+                        row.appendChild(loanId);
+                        row.appendChild(Applicant);
+                        row.appendChild(Amount);
+                        row.appendChild(loanType);
+                        row.appendChild(Purpose);
+                        row.appendChild(chartels);
+                        finalLoanTable.appendChild(row);
+                        finalLoan.removeChild(small);
+   
+                        const heading = document.createElement('p');
+                        const guarantorList = document.createElement('ol');
+                        const firstGuarantor = document.createElement('li');
+                        const secondGuarantor = document.createElement('li');
+                        const thirdGuarantor = document.createElement('li');
+
+                        firstGuarantor.innerHTML=jsonatedResponse.finalLoan.guarantor1;
+                        secondGuarantor.innerHTML=jsonatedResponse.finalLoan.guarantor2;
+                        thirdGuarantor.innerHTML=jsonatedResponse.finalLoan.guarantor3;
+                        heading.innerHTML='This Loan Guarantors are:';
+                        heading.style.marginTop="3em"
+                        finalLoan.appendChild(heading);
+                        guarantorList.style.listStyle="none";
+                        finalLoan.appendChild(guarantorList);
+                        guarantorList.appendChild(firstGuarantor);
+                        guarantorList.appendChild(secondGuarantor);
+                        guarantorList.appendChild(thirdGuarantor);           
+                         
+
+                    })).catch(err=>alert(err));
+                 } 
+                 }
+
+                }
+                });               
+            }                 
+                 ;})).catch(err=>alert(err));
+           }
+
+
+           $(document).ready( function () {
+              $('#applicationsTable').DataTable({searching: false, paging: false, info: false,sort:false});
+              $(".dataTables_empty").empty();
+              });
+
+            
+         </script>
+         <button class="button" onclick="displayCommittee()" >Committee -></button>
+         <div id="committeeDiv">
+             <h3>Loans in the Committee Approval Stage </h3>
+                 <table class="committeeTable">
+                     <tr id='tableHeaders'>
+                        <th>Loan Id</th>
+                        <th>Applicant</th>
+                        <th>Amount</th>
+                        <th>Purpose</th>
+                        <th>Applied on</th>
+                     </tr>
+                 </table>
+
+        </div>
+        </div>
+        <div id="approvalProgress">
+            <h3>Loans Approval progress.</h3>
+            <table class="existingApprovals">
+                <tr>
+                    <th>Loan Id</th>
+                    <th>Gained Approvals</th>
+                </tr>
+                <tr><%if(approvals.length>0){%>
+                    <%approvals.forEach(approval=>{%>
+                 <td class="approvalLoanId" data-doc="<%=approval.loanLoanId%>" ><%=approval.loanLoanId%></td>
+                 <td><%=approval.approvalCount%></td>      
+                </tr>           
+                    <%})%>
+                    <%}else{%>
+                   <%}%>
+            </table><br>
+            <p id="loanInApproval" style="color:green"></p>
+            
+        </div>
+        <div id="finalLoan">
+            <h3 id="finalLoanHeader">In the Group final Loans.</h3>
+            <table id="finalLoanTable">
+                <th>Loan Id</th>
+                <th>Applicant</th>
+                <th>Amount</th>                
+                <th>loanType</th>
+                <th>Purpose</th>
+                <th>Chartels</th>
+            </table>                
+            <small id="notification" style='color:maroon;font-size:18px; margin-top:20px;'>Currently there are no outstanding<br>
+            loans in the group!!<small>
+        </div>
+    </div>  
+</div>
+<%-include('.././partials/footer.ejs')%>
+</main>
+</body>

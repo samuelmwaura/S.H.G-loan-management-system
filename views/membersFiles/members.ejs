@@ -1,0 +1,208 @@
+<%-include('.././partials/header.ejs') %>
+<body>
+<main class="mainBody">
+<%-include('.././partials/navigationbar.ejs')%>
+<%-include('.././partials/sideNavBar.ejs')%>
+<div class='mainContainer'>
+    <div id="dashboardDiv">
+    <div id="memberSide">
+        <p style="text-align: center; font-size:24px;font-weight: 600;">Self Help Group Members</p>
+    <div id="allMembers" data-doc="<%=allowed%>">
+    <div>
+    <table class="display">
+        <thead>
+            <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Business</th>
+            <th>Residence</th>
+            <th>Business Location</th>
+        </tr>
+        </thead>
+        <tbody>
+            
+                <%if(members.length>0){%>
+                   <% members.forEach(member=>{%>
+                    <tr> 
+                    <td><%=member.firstName+ " "+member.lastName %></td>  
+                    <td>0<%=member.phone%></td>
+                    <td><%=member.business%></td>
+                    <td><%=member.residence%></td>
+                    <td><%=member.businessLocation%></td>                
+                        </tr>                    
+                    <%})%>                
+                <%}%>
+        </tbody>
+        <tfoot>
+
+        </tfoot>
+    </table>
+</div>
+   </div>
+   <div class="creationAndEditingDiv">
+   <p style="text-align: center; font-size:24px;font-weight: 600;">Creation and Editing Panel</p>
+   <div id="creationAndEditingDiv">
+       <div id="creationDiv">          
+           <button onclick="displayCreationForm()">Register Member</button>         <button onclick="displayEditForm()"">Edit Member</button> <button onclick="displayDeletionForm()">Delete Member</button><br>
+
+    <!--MEMBER CREATION FORM-->
+       <form id="creationForm" action="/createMember" method="POST" onsubmit="alert('Member created successfully')">
+        <div style="text-align: center; font-size:28px;"> Member Creation form.</div>
+           <label for="requests" class="creationFormLabels">Select Request:</label><select name="request" id='request' class='creationFormInputs' style="width:15em;" onchange="fillInRequest()">
+               <%if(requests.length>0){%>
+                   <%requests.forEach(request=>{%>
+                    <option value="<%=request.firstName%>"><%=request.firstName +" "+ request.lastName%></option>
+                   <%});%>               
+            <%}%>
+           </select><br>
+           <label for="firstName" class="creationFormLabels">First Name:</label><input type="text" name="firstName" class="creationFormInputs" placeholder="First Name" required><br>
+           <label for="lastName" class="creationFormLabels">Last Name:</label><input type="text" name="lastName" class="creationFormInputs" placeholder="Last Name" required><br>
+           <label for="idNUmber" class="creationFormLabels">Id Number:</label><input type="number" name="idNumber" class="creationFormInputs" placeholder="Id Number" required><br>
+           <label for="phone" class="creationFormLabels">Phone:</label><input type="tel" name="phone" class="creationFormInputs" placeholder="Mobile number" required><br>
+           <label for="business" class="creationFormLabels">Business:</label><input type="text" name="business" class="creationFormInputs" placeholder="Business" required><br>
+           <label for="residence" class="creationFormLabels">Residence:</label><input type="text" name="residence" class="creationFormInputs" placeholder="Residence" V><br>
+           <label for="businessLocation" class="creationFormLabels">Business Location:</label><input type="text" name="businessLocation" class="creationFormInputs" placeholder="Business Location" required><br>
+           <button  type="submit">Register</button>
+       <small id="confirmation" style="font-size:12; color: green;"></small>
+       </form>
+    </div>         
+        
+    <!--EDIT MEMBER FORM-->
+    <form style="display: none;" id="editForm" action="/editMember" method="POST" onsubmit="alert('Member information updated successfully')">
+     <div style="text-align: center; font-size:28px;"> Member Edit form.</div>
+        <label for="existingMember" class="creationFormLabels">Select Member:</label><select name="member" id="existingMember" class='creationFormInputs' style="width:15em;" onchange="fillInMember()">
+            <%if(members.length>0){%>
+                <%members.forEach(member=>{%>
+                 <option value="<%-member.firstName%>"><%=member.firstName +" "+ member.lastName%></option>
+                <%});%>               
+         <%}%>
+        </select><br>
+        <label for="firstName" class="creationFormLabels">First Name:</label><input type="text" name="firstName" id="firstName" class="creationFormInputs" placeholder="First Name" required><br>
+        <label for="lastName" class="creationFormLabels">Last Name:</label><input type="text" name="lastName" id="lastName" class="creationFormInputs" placeholder="Last Name" required><br>
+        <label for="phone" class="creationFormLabels">Phone:</label><input type="tel" name="phone" class="creationFormInputs" placeholder="Mobile number" required readonly><br>
+        <label for="idNumber" class="creationFormLabels">Id Number:</label><input type="number" name="idNumber" id="idNumber" class="creationFormInputs" placeholder="Id Number" required readonly><br>
+        <label for="business" class="creationFormLabels">Business:</label><input type="text" name="business" class="creationFormInputs" placeholder="Business" required><br>
+        <label for="residence" class="creationFormLabels">Residence:</label><input type="text" name="residence" class="creationFormInputs" placeholder="Residence" required><br>
+        <label for="businessLocation" class="creationFormLabels">Business Location:</label><input type="text" name="businessLocation" class="creationFormInputs" placeholder="Business Location" required><br>
+        <button type="submit">Save</button>
+    </form>
+
+    <!--DELETE MEMBER FORM-->
+    <form style="display: none;" id="deleteForm" action="/deleteMember" method="POST" onsubmit="confirm('Confrim delete Member!')">
+        <div style="text-align: center; font-size:28px;">Delete Member form.</div>
+           <label for="existingMember" class="creationFormLabels">Select Member:</label><select name="member" id="existingMember" class='creationFormInputs' style="width:15em;">
+               <%if(members.length>0){%>
+                   <%members.forEach(member=>{%>
+                    <option value="<%-member.phone%>"><%=member.firstName +" "+ member.lastName%></option>
+                   <%});%>               
+            <%}%>
+           </select><br>
+           <small  style="color: red;" id="validation"></small>
+           <button type="submit">Delete</button>
+       </form>
+
+   </div>
+</div>
+        </div>
+    <div id="groupSide">
+        <div class='sectionHead'>Joymakers Officials</div>
+        <div class="figures">
+            
+               <table id="summariesTable">
+                   <tr>
+                   <th>ROLE</th>
+                   <th>HOLDER</th>
+                   <th>CONTACT</th>
+                   </tr>
+                   <tr>
+                       <td>Chairman</td>
+                       <td><%=officials[0].firstName +' '+ officials[0].lastName%></td> 
+                       <td>0<%=officials[0].phone%></td>                                     
+                   </tr>
+                   <tr>
+                       <td>Secretary</td>
+                       <td><%=officials[1].firstName +' '+ officials[1].lastName%></td>
+                       <td>0<%=officials[1].phone%></td>
+                   </tr>
+                   <tr>
+                       <td>Treasurer</td>
+                       <td><%=officials[2].firstName +' '+ officials[2].lastName%></td>
+                       <td>0<%=officials[2].phone%></td>
+                    </tr>
+               </table>
+           
+        </div>
+    </div>
+    <script>
+
+    //FILLING IN REQUESTS
+    const fillInRequest=()=>{
+        const selectedRequest=document.getElementById('request').value;
+    const targetEndpoint =`/fetchExistingRequest/${selectedRequest}`;
+    fetch(targetEndpoint,{
+        method:'GET'
+    }).then(receivedResponse=>receivedResponse.json()).then(jsonatedReceivedResponse=>{    
+          
+        $('input[name="firstName"]').val(jsonatedReceivedResponse.result.firstName);
+        $('input[name="lastName"]').val(jsonatedReceivedResponse.result.lastName);
+        $('input[name="phone"]').val('0'+jsonatedReceivedResponse.result.phone);
+        $('input[name="business"]').val(jsonatedReceivedResponse.result.business);
+        $('input[name="residence"]').val(jsonatedReceivedResponse.result.residence);
+        $('input[name="businessLocation"]').val(jsonatedReceivedResponse.result.businessLocation);  
+    }).catch(err=>alert(err));
+    }
+
+
+
+    //FILLING IN VALUES FOR A MEMBER WHO IS BEING EDITTED AND DELETED
+const  fillInMember=()=>{
+    const selectedMember=document.getElementById('existingMember').value;
+    const targetEndpoint =`/fetchExistingUser/${selectedMember}`;   
+    fetch(targetEndpoint,{
+        method:'GET'
+    }).then(receivedResponse=>receivedResponse.json()).then(jsonatedReceivedResponse=>{    
+          
+        $('input[name="firstName"]').val(jsonatedReceivedResponse.result.firstName);
+        $('input[name="lastName"]').val(jsonatedReceivedResponse.result.lastName);
+        $('input[name="phone"]').val('0'+jsonatedReceivedResponse.result.phone);
+        $('input[name="idNumber"]').val(jsonatedReceivedResponse.result.idNumber);
+        $('input[name="business"]').val(jsonatedReceivedResponse.result.business);
+        $('input[name="residence"]').val(jsonatedReceivedResponse.result.residence);
+        $('input[name="businessLocation"]').val(jsonatedReceivedResponse.result.businessLocation);  
+    }).catch(err=>alert(err));
+}
+
+
+$(document).ready( function () {
+$('.display').DataTable({searching: false, paging: false,sort:false});
+const allMembers=document.querySelector('#allMembers');
+if(allMembers.dataset.doc=='no'){
+$('.creationAndEditingDiv').hide();
+}
+
+})
+
+const displayCreationForm=()=>{
+    $('#editForm').hide();
+    $('#creationForm').show();
+    $('#deleteForm').hide();
+
+}
+
+const displayEditForm=()=>{
+    $('#creationForm').hide();
+    $('#editForm').show();
+    $('#deleteForm').hide();
+}
+
+const displayDeletionForm=()=>{
+    $('#creationForm').hide();
+    $('#editForm').hide();
+    $('#deleteForm').show();
+}    
+    </script>
+</div>
+</div>
+<%-include('.././partials/footer.ejs')%>
+</main>
+</body>

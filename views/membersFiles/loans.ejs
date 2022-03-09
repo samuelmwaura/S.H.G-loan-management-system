@@ -1,0 +1,130 @@
+<%-include('.././partials/header.ejs') %>
+<body>
+<main class="mainBody">
+<%-include('.././partials/navigationbar.ejs')%>
+<%-include('.././partials/sideNavBar.ejs')%>
+<div class='mainContainer'>
+    <div class="registrationForm">
+        <form  name='loanApplicationForm' action="/loanApplications" method="post">
+        <div id="dataInputs">
+        <p>Loan Application.</p>
+        <small name="edit" style="color:maroon"></small><br>
+        <label for="applicant">Member:</label><input type="text" name="applicant" placeholder="Applicant full names" required readonly><br>
+        <label for="submittedRequest">Facility:</label><select id="submittedRequest" name="loan_type"  required>
+        <option selected disabled>Select a loan type</option>
+         <option value="First Time Borrower.">First Time Borrower.</option>
+         <option value="Subsequent Borrowing.">Subsequent Borrowing.</option>
+         <option value="Top up on Loan.">Top up on Loan.</option>
+        </select><br>
+
+        
+        <label for="amount">Amount:</label><input type="number" name="amount" placeholder="Amount" required)"><br>
+        <label for="purpose">Purpose:</label><input type="text" name="purpose" list="cars" placeholder="Loan Purpose" required><br>
+        <datalist id="cars">
+            <option disabled>Select or input a purpose</option>
+            <option>Business Lift.</option>
+            <option>Family/Individual consumption.</option>
+            <option>Utility Payments.</option>
+            <option>Asset Purchase</option>
+          </datalist>
+        <label for="Chartels">Chartels:</label><textarea type="text" name="chartels" placeholder="Indicate all Your Loan Chartels here." id='password' required></textarea><br> 
+        <small  style="color:maroon; font-size:15px;">*Kindly note that you cannot choose the same Guarantor twice.<br>*You cannot choose yourself as your own guarantor.</small><br>
+        <label for="guarantor1">Guarantor 1:</label><select id="guarantor1" name="guarantor1"  required>
+            <option selected disabled>Select the first guarantor.</option>
+            <%if(guarantors.length>0){%>
+                guarantors.shift();
+                <%guarantors.forEach(guarantor=>{%>
+                <option value="<%=guarantor.firstName%>"><%=guarantor.firstName +"  "+ guarantor.lastName%></option>
+                <%})%>
+            <%}%>
+
+        </select><br>
+        <label for="guarantor2">Guarantor 2:</label><select id="guarantor2" name="guarantor2"  required>
+            <option selected disabled>Select the second guarantor.</option>
+            <%if(guarantors.length>0){%>
+                guarantors.shift();
+                <%guarantors.forEach(guarantor=>{%>
+                <option value="<%=guarantor.firstName%>"><%=guarantor.firstName +"  "+ guarantor.lastName%></option>
+                <%})%>
+            <%}%>
+        </select><br>
+        <label for="guarantor3">Guarantor 3:</label><select id="guarantor3" name="guarantor3" onchange="checkSimilarity()" required>
+            <option selected disabled>Select the third guarantor.</option>
+            <%if(guarantors.length>0){%>
+                <%guarantors.forEach(guarantor=>{%>
+                <option value="<%=guarantor.firstName%>"><%=guarantor.firstName +"  "+ guarantor.lastName%></option>
+                <%})%>
+            <%}%>
+        </select><br>   
+         <script>
+            function checkSimilarity(){
+              const guarantor1= document.querySelector('#guarantor1').value;
+              const guarantor2 = document.querySelector('#guarantor2').value;
+              const guarantor3= document.querySelector('#guarantor3').value;              
+             
+              if(guarantor1 === guarantor2 ||guarantor1 === guarantor3|| guarantor2=== guarantor3){
+                const validation = document.querySelector('#validation');
+                validation.innerHTML = 'You cannot choose the same guarantor twice or<br> choose yourself as your guarantor.';
+               }}
+         </script>
+        <%-validation%>
+        <small style="color:red; font-size: 15px;" id="validation"></small>
+        <div>   
+        <button type="submit" name="submit">Apply</button>
+              
+        </div> 
+        </div>
+       </form>
+       <!-- <div id="list">
+        <p>Existing Loan Requests.</p>
+        <div>
+            <table>
+                <tr>First row</tr>
+                <tr> second row</tr>
+                <tr>Third Row</tr>
+            </table>
+        </div>
+    
+        </ol>
+       </div> -->
+    
+</div>
+<%-include('.././partials/footer.ejs')%>
+</main>
+<script>
+    $(document).ready(
+        function(){
+            $("input[name='applicant']").val('<%=member.userName%>');
+            if('<%=hasLoan.declined%>'==='yes'){            
+            $("input[name='purpose']").val('<%=hasLoan.declined%>');
+            
+            if($("input[name='purpose']").val()==='yes'){
+               $("form[name='loanApplicationForm']").attr('action','/editLoan');
+               $("small[name='edit']").text('Replace the declined Guarantor.')
+               $("input[name='amount']").val('<%=hasLoan.Amount%>');
+               $("textarea[name='chartels']").val('<%=hasLoan.chartels%>');
+               $("input[name='purpose']").val('<%=hasLoan.purpose%>');
+               $("select[name='loan_type']").val('<%=hasLoan.loan_type%>');
+               $("select[name='guarantor1']").val('<%=hasLoan.guarantor1%>');
+               $("select[name='guarantor2']").val('<%=hasLoan.guarantor2%>');
+               $("select[name='guarantor3']").val('<%=hasLoan.guarantor3%>');               
+               $("button[name='submit']").text('Save');   
+
+              // alert($("form[name='loanApplicationForm']").attr('action'));
+
+            //    $("button[name='submit']").on('click',function(e){
+            //        e.preventDefault();
+            //        $("form[name='loanApplicationForm']").attr('action',"/loans/editLoan");
+            //        $("form[name='loanApplicationForm']").submit();
+            //         alert($("form[name='loanApplicationForm']").attr('action'));
+            //         alert('submitted');
+            //    });        
+
+            }
+        }
+
+
+        }
+    );
+</script>
+</body>

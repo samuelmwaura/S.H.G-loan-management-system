@@ -1,0 +1,27 @@
+{
+  "name": "aceace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "africastalking": "^0.5.4",
+    "bcryptjs": "^2.4.3",
+    "clickatell-platform": "^2.0.11",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "mongoose": "^6.0.8",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.2",
+    "nodemon": "^2.0.13",
+    "pdfkit": "^0.13.0",
+    "pdfkit-table": "^0.1.70",
+    "sequelize": "^6.7.0"
+  }
+}
