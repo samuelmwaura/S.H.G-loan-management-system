@@ -2,7 +2,6 @@ const {user,request,loan, member,approval, official,outstandingLoan}= require('.
 const bcrypt = require('bcryptjs');
 const sequelize = require('../database/connection');
 const {newMessage} = require('../atMessaging');
-const res = require('express/lib/response');
 
 //RENDERING THE LOGGEDINPAGE
 const getLoginPage=(req,res)=>res.render('./loginandOutfiles/login',{message:''});
