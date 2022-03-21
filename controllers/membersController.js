@@ -42,7 +42,7 @@ const loginFunction=(req,res)=>{
     user.findOne({where:{userName:userName}}).then( async result=>{//we are using the user model here  user.user
         if(result){
             if(await bcrypt.compare(password,result.password)){
-       req.session.loggedInUser =result;
+       req.session.loggedInUser=result;
        console.log(req.session);
        res.redirect('/dashboard');
        
